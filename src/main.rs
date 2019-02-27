@@ -2,6 +2,8 @@ pub use failure::Error;
 pub use log::{debug, info, warn};
 use std::io;
 
+pub mod entity;
+
 /// Configure logging to file and stdout.
 fn setup_logging() -> Result<(), Error> {
     let base_config =
