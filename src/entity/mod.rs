@@ -1,5 +1,5 @@
 // Index type used to fetch a given entity.
-pub trait EntityIndex: Into<usize> {}
+pub trait EntityIndex: Into<usize> + From<usize> + Sized {}
 
 /// Generic entity type
 pub trait Entity
@@ -22,6 +22,13 @@ where
     /// Set the value at the given index.
     pub fn set(&mut self, index: T::Index, value: T) {
         self.0[index.into()] = value;
+    }
+
+    /// Insert a new entity, returning its assigned index.
+    pub fn insert(&mut self, value: T) -> T::Index {
+        let index = self.0.len();
+        self.0.push(value);
+        T::Index::from(index)
     }
 
     /// Get immutable access to the entity at the given index.
