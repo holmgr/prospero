@@ -1,5 +1,5 @@
 // Index type used to fetch a given entity.
-pub trait EntityIndex: Into<usize> + From<usize> {}
+pub trait EntityIndex: Into<usize> + From<usize> + Sized {}
 
 /// Generic entity type
 pub trait Entity
