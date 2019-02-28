@@ -1,6 +1,7 @@
 pub use failure::Error;
 pub use log::{debug, info, warn};
-use std::io;
+use serde::{Deserialize, Serialize};
+use std::{fs::File, io};
 
 pub mod entity;
 pub mod world;
@@ -38,9 +39,16 @@ fn main() -> Result<(), Error> {
     // Configure logging.
     setup_logging()?;
 
-    // TODO: Make some actual application code.
-    info!("Some info level message, to be sent to stdout and file");
-    debug!("Some debug level message, only to be sent to file");
+    // Create world object.
+    info!("Creating world object.");
+    let world = world::World::new();
+
+    // TODO: Do actual simulation.
+
+    // Write final world object to file.
+    info!("Initial simulation done, writing world object to world.json");
+    let f = File::create("world.json")?;
+    serde_json::to_writer_pretty(f, &world)?;
 
     Ok(())
 }
