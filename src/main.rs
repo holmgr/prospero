@@ -3,6 +3,7 @@ pub use log::{debug, info, warn};
 use std::io;
 
 pub mod entity;
+pub mod world;
 
 /// Configure logging to file and stdout.
 fn setup_logging() -> Result<(), Error> {
