@@ -1,6 +1,5 @@
 pub use failure::Error;
 pub use log::{debug, info, warn};
-use serde::{Deserialize, Serialize};
 use std::{fs::File, io};
 
 pub mod entity;
