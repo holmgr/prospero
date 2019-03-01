@@ -3,6 +3,7 @@ pub use log::{debug, info, warn};
 use std::{fs::File, io};
 
 pub mod entity;
+pub mod point;
 pub mod world;
 
 /// Configure logging to file and stdout.
