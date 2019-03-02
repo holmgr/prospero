@@ -2,6 +2,7 @@ pub use failure::Error;
 pub use log::{debug, info, warn};
 use std::{fs::File, io};
 
+pub mod config;
 pub mod entity;
 pub mod point;
 pub mod world;
@@ -38,6 +39,11 @@ fn setup_logging() -> Result<(), Error> {
 fn main() -> Result<(), Error> {
     // Configure logging.
     setup_logging()?;
+
+    // Load config on compile.
+    let config: config::Config = toml::from_str(include_str!("../Config.toml"))
+        .expect("Failed to load config file Config.toml");
+    debug!("Using configuration: {:#?}", config);
 
     // Create world object.
     info!("Creating world object.");
