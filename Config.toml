@@ -1,0 +1,5 @@
+
+[simulation]
+map_seed = 42
+number_of_systems = 10000
+system_spread = 150
