@@ -1,4 +1,4 @@
-// Index type used to fetch a given entity.
+/// Index type used to fetch a given entity.
 pub trait EntityIndex: Into<usize> + From<usize> + Sized {}
 
 /// Generic entity type
