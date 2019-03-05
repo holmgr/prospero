@@ -4,6 +4,7 @@ use std::{fs::File, io};
 
 pub mod config;
 pub mod entity;
+pub mod gen;
 pub mod point;
 pub mod world;
 
@@ -47,9 +48,11 @@ fn main() -> Result<(), Error> {
 
     // Create world object.
     info!("Creating world object.");
-    let world = world::World::new();
+    let mut world = world::World::new();
 
-    // TODO: Do actual simulation.
+    gen::generate(&config, &mut world);
+    gen::simulate(&config, &mut world);
+    gen::finalize(&config, &mut world);
 
     // Write final world object to file.
     info!("Initial simulation done, writing world object to world.json");
