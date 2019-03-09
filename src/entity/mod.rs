@@ -1,3 +1,5 @@
+pub mod astronomical;
+
 /// Index type used to fetch a given entity.
 pub trait EntityIndex: Into<usize> + From<usize> + Sized {}
 
