@@ -1,3 +1,6 @@
+pub mod astronomical;
+use serde::{Deserialize, Serialize};
+
 /// Index type used to fetch a given entity.
 pub trait EntityIndex: Into<usize> + From<usize> + Sized {}
 
@@ -13,12 +16,18 @@ where
 
 /// Generic array over one type of entity.
 /// Indexable using that the entity index type.
+#[derive(Serialize, Deserialize)]
 pub struct EntityArray<T>(Vec<T>);
 
 impl<T> EntityArray<T>
 where
     T: Entity,
 {
+    /// Create a new EntityArray.
+    pub fn new() -> Self {
+        EntityArray(Vec::new())
+    }
+
     /// Set the value at the given index.
     pub fn set(&mut self, index: T::Index, value: T) {
         self.0[index.into()] = value;

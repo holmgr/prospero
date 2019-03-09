@@ -1,4 +1,9 @@
-use crate::{config::Config, point::Point, world::World};
+use crate::{
+    config::Config,
+    entity::{astronomical::System, EntityArray},
+    point::Point,
+    world::World,
+};
 pub use log::{debug, info, warn};
 use rand::{
     distributions::{Distribution, Normal},
@@ -8,7 +13,7 @@ use rand_chacha::ChaChaRng;
 use std::time::Instant;
 
 /// Generate an initial world.
-pub fn generate(config: &Config, _world: &mut World) {
+pub fn generate(config: &Config, world: &mut World) {
     info!("Generating the initial world");
 
     let mut rng = ChaChaRng::seed_from_u64(config.simulation.map_seed.into());
@@ -29,11 +34,20 @@ pub fn generate(config: &Config, _world: &mut World) {
         ))
     }
 
-    // TODO: Generate actual systems at each generated location.
+    // Generate actual systems.
+    let mut systems = EntityArray::new();
+    let mut system_ids = vec![];
+    for loc in locations {
+        let system = System::builder().location(loc).name("").build();
+        let id = systems.insert(system);
+        system_ids.push(id);
+    }
+
+    world.systems = systems;
 
     info!(
         "Generated {} systems, taking {} ms",
-        locations.len(),
+        system_ids.len(),
         ((now.elapsed().as_secs() * 1_000) + u64::from(now.elapsed().subsec_millis()))
     );
 }
