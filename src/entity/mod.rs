@@ -30,6 +30,11 @@ where
         EntityArray(Vec::new())
     }
 
+    /// Returns the number of entities in this collection.
+    pub fn len(&self) -> usize {
+        self.0.len()
+    }
+
     /// Set the value at the given index.
     pub fn set(&mut self, index: T::Index, value: T) {
         self.0[index.into()] = value;
@@ -119,6 +124,7 @@ mod tests {
             let idx = array.insert(item.clone());
             assert_eq!(array[idx], *item);
         }
+        assert_eq!(array.len(), data.len());
 
         // Test iterator.
         for (index, entity) in array.into_iter().enumerate() {
