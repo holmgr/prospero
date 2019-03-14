@@ -12,6 +12,8 @@ use rand::{
 use rand_chacha::ChaChaRng;
 use std::time::Instant;
 
+mod namegen;
+
 /// Generate an initial world.
 pub fn generate(config: &Config, world: &mut World) {
     info!("Generating the initial world");
