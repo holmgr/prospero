@@ -1,5 +1,7 @@
 pub mod astronomical;
+
 use serde::{Deserialize, Serialize};
+use std::ops::{Index, IndexMut};
 
 /// Index type used to fetch a given entity.
 pub trait EntityIndex: Into<usize> + From<usize> + Sized {}
@@ -78,6 +80,21 @@ impl<'a, T: Entity> IntoIterator for &'a mut EntityArray<T> {
     }
 }
 
+impl<T: Entity> Index<T::Index> for EntityArray<T> {
+    type Output = T;
+
+    fn index(&self, index: T::Index) -> &T {
+        self.get(index).unwrap()
+    }
+}
+
+impl<T: Entity> IndexMut<T::Index> for EntityArray<T> {
+    fn index_mut<'a>(&'a mut self, index: T::Index) -> &'a mut T {
+        self.get_mut(index).unwrap()
+    }
+}
+
+#[cfg(test)]
 mod tests {
     use super::*;
     use crate::entity::astronomical::System;
@@ -96,11 +113,11 @@ mod tests {
                 .build(),
         ];
 
-        // Test get and insert.
+        // Test indexing and insert.
         let mut array = EntityArray::new();
         for item in &data {
             let idx = array.insert(item.clone());
-            assert_eq!(array.get(idx).unwrap(), item);
+            assert_eq!(array[idx], *item);
         }
 
         // Test iterator.
