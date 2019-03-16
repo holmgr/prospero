@@ -28,7 +28,7 @@ impl NameGen {
 
     /// Generate a new name.
     /// Attempt to generate a new unique name, running a maximum number of tries before returning none.
-    fn generate<R: Rng>(&mut self, _gen: &mut R) -> Result<String, ()> {
+    pub fn generate<R: Rng>(&mut self, _gen: &mut R) -> Result<String, ()> {
         for _ in 0..Self::MAX_TRIES {
             let name = self.chain.generate_str();
             if !self.cache.contains(&name) {
