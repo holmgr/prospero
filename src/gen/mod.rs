@@ -13,6 +13,7 @@ use rand_chacha::ChaChaRng;
 use std::time::Instant;
 
 mod namegen;
+use namegen::NameGen;
 
 /// Generate an initial world.
 pub fn generate(config: &Config, world: &mut World) {
@@ -60,6 +61,19 @@ pub fn simulate(_config: &Config, _world: &mut World) {
 }
 
 /// Finalize the generation/simulation of the world.
-pub fn finalize(_config: &Config, _world: &mut World) {
-    // TODO: Do some implementation.
+pub fn finalize(config: &Config, world: &mut World) {
+    // Assign system names.
+    let mut rng = ChaChaRng::seed_from_u64(config.simulation.map_seed.into());
+    let mut sng = NameGen::new();
+    for name in include_str!("../../resources/eso.txt").lines() {
+        sng.train(name);
+    }
+    for system in &mut world.systems {
+        if let Ok(name) = sng.generate(&mut rng) {
+            system.name = name;
+        } else {
+            warn!("Ran out of names to assign to systems");
+            break;
+        }
+    }
 }
