@@ -1,10 +1,12 @@
 pub use failure::Error;
+use ggez::{event, ContextBuilder};
 pub use log::{debug, info, warn};
 use std::{fs::File, io};
 
 pub mod config;
 pub mod entity;
 pub mod gen;
+mod gui;
 pub mod point;
 pub mod world;
 
@@ -58,6 +60,16 @@ fn main() -> Result<(), Error> {
     info!("Initial simulation done, writing world object to world.json");
     let f = File::create("world.json")?;
     serde_json::to_writer_pretty(f, &world)?;
+
+    info!("Starting GUI...");
+    let ctx = &mut ContextBuilder::new("prospero", "holmgr")
+        .build()
+        .expect("Failed to create ggez context");
+    let mut gui = gui::GUI::new();
+    match event::run(ctx, &mut gui) {
+        Ok(_) => println!("Exited cleanly."),
+        Err(e) => println!("Error occured: {}", e),
+    }
 
     Ok(())
 }
