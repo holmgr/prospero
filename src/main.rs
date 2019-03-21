@@ -1,5 +1,4 @@
 pub use failure::Error;
-use ggez::{event, ContextBuilder};
 pub use log::{debug, info, warn};
 use std::{fs::File, io};
 
@@ -62,14 +61,8 @@ fn main() -> Result<(), Error> {
     serde_json::to_writer_pretty(f, &world)?;
 
     info!("Starting GUI...");
-    let ctx = &mut ContextBuilder::new("prospero", "holmgr")
-        .build()
-        .expect("Failed to create ggez context");
-    let mut gui = gui::GUI::new();
-    match event::run(ctx, &mut gui) {
-        Ok(_) => println!("Exited cleanly."),
-        Err(e) => println!("Error occured: {}", e),
-    }
+    let mut gui = gui::GUI::new(world);
+    gui.start();
 
     Ok(())
 }
